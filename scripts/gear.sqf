@@ -1,6 +1,31 @@
 /*
 put this in the unit's init line:
 id = ["rifleman", this] call compile preprocessFileLineNumbers "scripts\player_gear.sqf";
+
+Squads:
+Platoon Command - 1'6
+- Platoon Commander - platcomm
+- Platoon Sergeant - platsrg
+- Platoon RATELO - platrto
+- Platoon Medic - platmedic
+
+Rifle Squad - 1'1 / 1'2 / 1'3
+- Squad Leader - sqdlead
+-- Fire Team 1 Leader - sqdftl
+--- Automatic Rifleman - sqdar
+--- Grenadier - sqdgren
+--- Rifleman (AT4) - sqdat
+-- Fire Team 2 Leader - sqdftl
+--- Automatic Rifleman - sqdar
+--- Grenadier - sqdgren
+--- Rifleman (AT4) - sqdat
+
+Weapon Squad - 1'4
+- Squad Leader - weaplead
+-- Machine Gunner 1/2 - weaphmg
+-- Assistant Machine Gunner 1/2 - weaphmgass
+-- AT Gunner 1/2 - weapat
+-- Assistant AT Gunner 1/2 - weapatass
 */
 
 private ["_type", "_unit"];
@@ -9,117 +34,210 @@ _type = _this select 0;
 _unit = _this select 1;
 if (!local _unit) exitWith {};
 
+//Remove all existing equipment
 removeAllWeapons _unit;
 removeAllAssignedItems _unit;
-removeBackPack _unit;
-removeVest _unit;
 removeUniform _unit;
+removeVest _unit;
+removeBackPack _unit;
 removeHeadGear _unit;
-_unit addWeapon "ItemMap";
-_unit addWeapon "ItemCompass";
-_unit addItem "NVGoggles";
+
+//Add basic gear all soldiers get
+_unit addVest "";
+_unit addBackpack "":
+_unit addHeadgear "";
+_unit addGoggles "";
+
+//Add magazines before weapon
+_unit addItem "ItemMap";
+_unit assignItem "ItemMap";
+_unit addItem "ItemCompass";
+_unit assignItem "ItemCompass";
+_unit addItem "ItemRadio";
+_unit assignItem "ItemRadio";
+_unit addItem "ItemWatch";
+_unit assignItem "ItemWatch";
+
 _unit addItem "ACRE_PRC343";
-//_unit addItem "ACRE_PRC148";
+_unit addItem "ACE_MapTools";
+
+//Add vest first, add the mags and stuff you want in it, then add uniform and items you want in the uniform.
+//(unitBackpack _unit) addItemCargo ["", X];
 
 switch (_type) do {
-	case "rifleman": {
-		_unit addUniform "U_OI_CombatUniform_ocamo";
-		_unit addVest "V_PlateCarrier1_cbr";
-		_unit addHeadgear "H_Cap_red";
-		_unit addGoggles "G_Shades_Black";
-		_unit addItem "FirstAidKit";
-		_unit addBackpack "B_Bergen_sgg";
-		_unit addMagazine "30Rnd_65x39_case_mag";
-		_unit addMagazine "30Rnd_65x39_case_mag_Tracer";
-		_unit addMagazine "30Rnd_65x39_case_mag";
-		_unit addMagazine "30Rnd_65x39_case_mag";
-		_unit addMagazine "30Rnd_65x39_case_mag";
-		_unit addMagazine "30Rnd_65x39_case_mag";
-		_unit addMagazine "30Rnd_65x39_case_mag";
-		_unit addMagazine "30Rnd_65x39_case_mag";
-		_unit addMagazine "HandGrenade";
-		_unit addMagazine "HandGrenade";
-		_unit addWeapon "arifle_TRG20_F";
-		_unit addPrimaryWeaponItem "optic_Aco";
-		_unit addPrimaryWeaponItem "acc_pointer_IR";
+	//Platoon Commander - platcomm
+	case "platcomm": {
+		_unit addItem "ACRE_PRC148";
+		_unit addItem "ACE_Vector";
+		_unit assignItem "ACE_Vector";
+		_unit addItem "ACE_microDAGR";
+		
+		//Add MX Rifle w/Iron Sites
+		_unit addWeapon "arifle_MX_f";
+		//Add 6.5mm Suppressor
 		_unit addPrimaryWeaponItem "muzzle_snds_H";
-		_unit addMagazine "16Rnd_9x21_Mag";
-		_unit addMagazine "16Rnd_9x21_Mag";
-		_unit addWeapon "hgun_Rook40_F";
-		_unit addHandgunItem "muzzle_snds_L";
-	};
-	case "rifleman2": {
-		_unit addUniform "U_OI_CombatUniform_ocamo";
-		_unit addVest "V_PlateCarrier1_cbr";
-		_unit addHeadgear "H_Cap_red";
-		_unit addGoggles "G_Shades_Black";
-		_unit addItem "FirstAidKit";
-		_unit addBackpack "B_Bergen_sgg";
-		_unit addMagazine "30Rnd_65x39_case_mag";
-		_unit addMagazine "30Rnd_65x39_case_mag_Tracer";
-		_unit addMagazine "30Rnd_65x39_case_mag";
-		_unit addMagazine "30Rnd_65x39_case_mag";
-		_unit addMagazine "30Rnd_65x39_case_mag";
-		_unit addMagazine "30Rnd_65x39_case_mag";
-		_unit addMagazine "30Rnd_65x39_case_mag";
-		_unit addMagazine "30Rnd_65x39_case_mag";
-		_unit addMagazine "HandGrenade";
-		_unit addMagazine "HandGrenade";
-		_unit addWeapon "arifle_TRG20_F";
+		//Add ACO Optic
 		_unit addPrimaryWeaponItem "optic_Aco";
-		_unit addPrimaryWeaponItem "acc_pointer_IR";
-		_unit addPrimaryWeaponItem "muzzle_snds_H";
-		_unit addMagazine "16Rnd_9x21_Mag";
-		_unit addMagazine "16Rnd_9x21_Mag";
-		_unit addWeapon "hgun_Rook40_F";
-		_unit addHandgunItem "muzzle_snds_L";
+		//Add Flashlight
+		_unit addPrimaryWeaponItem "acc_flashlight";
 	};
-	case "rifleman2": {
+	//Platoon Sergeant - platsrg
+	case "platsrg": {
+		_unit addItem "ACRE_PRC148";
+		_unit addItem "ACE_Vector";
+		_unit assignItem "ACE_Vector";
+		_unit addItem "ACE_microDAGR";
+	};
+	//Platoon RATELO - platrto
+	case "platrto": {
+		(unitBackpack _unit) addItemCargo ["AN/PRC-117", 1];
+	};
+	//Platoon Paramedic - platparamedic
+	case "platparamedic": {
+		//10-15 x Bandage (basic)
+		(unitBackpack _unit) addItemCargo ["ACE_fieldDressing", 15];
+		//15-20 x Bandage (elastic)
+		(unitBackpack _unit) addItemCargo ["ACE_elasticBandage", 20];
+		//8 x Bandage (packing)
+		(unitBackpack _unit) addItemCargo ["ACE_packingBandage", 8];
+		//10-15 x QuikClot
+		(unitBackpack _unit) addItemCargo ["ACE_quikclot", 15];
+		//5 x Tourniquet
+		(unitBackpack _unit) addItemCargo ["ACE_tourniquet", 5];
+		//2 x Saline IV (500ml)
+		(unitBackpack _unit) addItemCargo ["ACE_salineIV_500", 2];
+		//3 x Blood IV (1000ml) - Taken from vehicle inventory only when needed
+		//_unit addItem "ACE_bloodIV";
+		//3 x Plasma IV (1000ml) - Taken from vehicle inventory only when needed
+		//_unit addItem "ACE_plasmaIV";
+		//8 x Morphine Autoinjector
+		(unitBackpack _unit) addItemCargo ["ACE_morphine", 8];
+		//8 x Epinephrine Autoinjector
+		(unitBackpack _unit) addItemCargo ["ACE_epinephrine", 8];
+		//12 x Atropine Autoinjector
+		(unitBackpack _unit) addItemCargo ["ACE_atropine", 12];
+		//1-3 x Surgical kit
+		(unitBackpack _unit) addItemCargo ["ACE_surgicalKit", 3];
+		//1-3 x Personal Aid Kit
+		(unitBackpack _unit) addItemCargo ["ACE_personalAidKit", 3];
+	};
+	//Platoon Medic - platmedic
+	case "platmedic": {
+		//10-15 x Bandage (basic)
+		(unitBackpack _unit) addItemCargo ["ACE_fieldDressing", 15];
+		//15-20 x Bandage (elastic)
+		(unitBackpack _unit) addItemCargo ["ACE_elasticBandage", 20];
+		//8 x Bandage (packing)
+		(unitBackpack _unit) addItemCargo ["ACE_packingBandage", 8];
+		//10-15 x QuikClot
+		(unitBackpack _unit) addItemCargo ["ACE_quikclot", 15];
+		//5 x Tourniquet
+		(unitBackpack _unit) addItemCargo ["ACE_tourniquet", 5];
+		//6 x Saline IV (500ml)
+		(unitBackpack _unit) addItemCargo ["ACE_salineIV_500", 6];
+		//8 x Morphine Autoinjector
+		(unitBackpack _unit) addItemCargo ["ACE_morphine", 8];
+		//8 x Epinephrine Autoinjector
+		(unitBackpack _unit) addItemCargo ["ACE_epinephrine", 8];
+		//12 x Atropine Autoinjector
+		(unitBackpack _unit) addItemCargo ["ACE_atropine", 12];
+		//1-3 x Surgical kit
+		(unitBackpack _unit) addItemCargo ["ACE_surgicalKit", 3];
+		//1-3 x Personal Aid Kit
+		(unitBackpack _unit) addItemCargo ["ACE_personalAidKit", 3];
+
+	};
+	//Squad Leader - sqdlead
+	case "sqdlead": {
+		_unit addItem "ACRE_PRC148";
+		_unit addItem "ACE_Vector";
+		_unit assignItem "ACE_Vector";
+		_unit addItem "ACE_microDAGR";
+	};
+	//Fire Team 1 Leader - sqdftl
+	case "sqdftl": {
+		_unit addItem "ACE_Vector";
+		_unit assignItem "ACE_Vector";
+		_unit addItem "ACE_microDAGR";
+	};
+	//Automatic Rifleman - sqdar
+	case "sqdar": {
+	};
+	//Grenadier - sqdgren
+	case "sqdgren": {
+	};
+	//Rifleman (AT4) - sqdat
+	case "sqdat": {
+	};
+	//Squad Combat First Responder (CFR) - sqdcls
+	case "sqdcls": {
+		//10-15 x Bandage (basic)
+		(unitBackpack _unit) addItemCargo ["ACE_fieldDressing", 15];
+		//15-20 x Bandage (elastic)
+		(unitBackpack _unit) addItemCargo ["ACE_elasticBandage", 20];
+		//5-8 x Bandage (packing)
+		(unitBackpack _unit) addItemCargo ["ACE_packingBandage", 8];
+		//10-15 x QuikClot
+		(unitBackpack _unit) addItemCargo ["ACE_quikclot", 15];
+		//3 x Tourniquet
+		(unitBackpack _unit) addItemCargo ["ACE_tourniquet", 3];
+		//4 x Saline IV (500ml)
+		(unitBackpack _unit) addItemCargo ["ACE_salineIV_500", 4];
+		//5 x Morphine Autoinjector
+		(unitBackpack _unit) addItemCargo ["ACE_morphine", 5];
+		//5 x Epinephrine Autoinjector
+		(unitBackpack _unit) addItemCargo ["ACE_epinephrine", 5];
+		//8 x Atropine Autoinjector
+		(unitBackpack _unit) addItemCargo ["ACE_atropine", 8];
+	};
+	//Squad Leader - weaplead
+	case "weaplead": {
+		_unit addItem "ACRE_PRC148";
+		_unit addItem "ACE_Vector";
+		_unit assignItem "ACE_Vector";
+		_unit addItem "ACE_microDAGR";
+	};
+	//Machine Gunner - weaphmg
+	case "weaphmg": {
+	};
+	//Assistant Machine Gunner - weaphmgass
+	case "weaphmgass": {
+		_unit addItem "ACE_Vector";
+		_unit assignItem "ACE_Vector";
+		_unit addItem "ACE_microDAGR";
+	};
+	//AT Gunner - weapat
+	case "weapat": {
+		
+	};
+	//Assistant AT Gunner - weapatass
+	case "weapatass": {
+		_unit addItem "ACE_Vector";
+		_unit assignItem "ACE_Vector";
+		_unit addItem "ACE_microDAGR";
 	};
 };
 
-
-/*
-
-_OpforUniformArray = ["U_Marshal","U_C_Journalist","U_BG_leader","U_BG_Guerilla3_1","U_BG_Guerilla2_3","U_BG_Guerilla2_1","U_BG_Guerilla2_2","U_BG_Guerilla1_1","U_BG_Guerrilla_6_1"];
-_OpforHeadgearArray = ["H_Bandanna_gry","H_Bandanna_cbr","H_Bandanna_khk_hs","H_Bandanna_khk","H_Bandanna_mcamo","H_Bandanna_camo","H_Booniehat_tan"];
-_OpforGogglesArray = ["G_Balaclava_blk","G_Balaclava_oli","G_Bandanna_blk","G_Bandanna_oli","H_Bandanna_mcamo","H_Bandanna_camo"];
-_OpforVestArray = ["V_HarnessO_brn","V_BandollierB_blk","V_BandollierB_oli","V_TacVest_camo","rhsusf_iotv_ocp","rhs_6b23_sniper"];
-
-_random1 = _OpforUniformArray select floor random count _OpforUniformArray;
-_random2 = _OpforHeadgearArray select floor random count _OpforHeadgearArray;
-_random3 = _OpforGogglesArray select floor random count _OpforGogglesArray;
-_random4 = _OpforVestArray select floor random count _OpforVestArray;
-
-switch (_type) do
-{      
-
-        case "opforinsurgent":
-        {
-        removeAllWeapons _unit;
-        removeAllItems _unit;
-        removeAllAssignedItems _unit;
-        removeUniform _unit;
-        removeVest _unit;
-        removeBackpack _unit;
-        removeHeadgear _unit;
-        removeGoggles _unit;
-        _unit forceAddUniform _random1;
-        for "_i" from 1 to 2 do {_unit addItemToUniform "rhs_30Rnd_545x39_7N22_AK";};
-        _unit addItemToUniform "rhs_mag_m67";
-        _unit addVest _random4;
-        for "_i" from 1 to 3 do {_unit addItemToVest "rhs_30Rnd_545x39_7N22_AK";};
-        for "_i" from 1 to 3 do {_unit addItemToVest "rhs_30Rnd_545x39_AK_green";};
-        for "_i" from 1 to 3 do {_unit addItemToVest "rhs_mag_m67";};
-        _unit addItemToVest "SmokeShell";
-        _unit addHeadgear _random2;
-        _unit addGoggles _random3;
-        _unit addWeapon "rhs_weap_ak74m";
-        };  
-
-};
-
-*/
-
-
-
+//Add Uniform and items standard items to uniform such as IPAK
+_unit addUniform "";
+//4 x Bandage (basic)
+_unit addItem "ACE_fieldDressing";
+_unit addItem "ACE_fieldDressing";
+_unit addItem "ACE_fieldDressing";
+_unit addItem "ACE_fieldDressing";
+//3 x Bandage (elastic)
+_unit addItem "ACE_elasticBandage";
+_unit addItem "ACE_elasticBandage";
+_unit addItem "ACE_elasticBandage";
+//3 x Bandage (packing)
+_unit addItem "ACE_packingBandage";
+_unit addItem "ACE_packingBandage";
+_unit addItem "ACE_packingBandage";
+//3 x QuikClot
+_unit addItem "ACE_quikclot";
+_unit addItem "ACE_quikclot";
+_unit addItem "ACE_quikclot";
+//1 x Morphine Autoinjector
+_unit addItem "ACE_morphine";
+//1 x Tourniquet
+_unit addItem "ACE_tourniquet";
